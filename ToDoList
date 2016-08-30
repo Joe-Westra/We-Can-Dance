@@ -1,0 +1,38 @@
+
+1. Change the populate grid function to only fire at initilization Done
+    New Problem: window does not resize anymore.
+2. play with timers to change food colour/value over time
+3. add players
+4. add baddies
+
+
+
+
+
+=======
+=NOTES=
+=======
+
+I am obviously not understanding how to properly utilize inheritance.
+I am getting confused about what is inherited, what isn't and ultimately, how to
+properly design even this simple program to capitalize on OOP concepts.
+
+Visualizing the design of this program has been very difficult.  I am guessing
+and checking rather than imagining and realizing.
+
+
+ISSUE:
+can't figure out how to change the colour of a certain square permanently.  I'm probably missing
+something very basic.
+
+
+How to fix it:
+in the constructor for each new Food/Ground/whatever, add a Color paramter to 
+the constructor.  In playgrid, keep track of each squares default colour, and
+pass that as a actual parameter.  Obviously!
+
+How else could this be done?
+-use enums?
+
+
+What I've tried so far:

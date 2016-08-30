@@ -4,7 +4,7 @@ package wecandance;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Shape;
+import java.awt.Rectangle;
 import java.util.TimerTask;
 import java.util.Timer;
 import javax.swing.*;
@@ -21,6 +21,7 @@ public class PlayGrid extends JPanel{
     Square[][] squares;
     private boolean gameInSession;
     java.util.Timer gameTime;
+    Color gc, fc, wc;
             
     PlayGrid(){
         this(500,500);
@@ -28,6 +29,7 @@ public class PlayGrid extends JPanel{
     PlayGrid(int xSize, int ySize){
         this(xSize,ySize, 100,100);
     }
+    
     PlayGrid(int xSize, int ySize, int xDimensions, int yDimensions){
         this.xDimensions = xDimensions;
         this.yDimensions = yDimensions;
@@ -35,21 +37,31 @@ public class PlayGrid extends JPanel{
         Resize(xSize, ySize);
         //display any "get ready messages"
         gameTime = new Timer();
+        gc = new Color(25,25,25);
+        fc = new Color(10,20,22);
+        wc = new Color(200,18,22);
     }
-        TimerTask play = new TimerTask() {
-       
-        public void run(){
-            if(gameInSession){
-                for(int x = 0; x < xDimensions; x++){
-                    for(int y = 0; y < yDimensions; y++){
-                        if(squares[x][y].toString()== "Food")
-                            squares[x][y].setColour(Color.blue);
-                    }
-                }    
-            }
+    
+    
+    TimerTask test = new TimerTask() { public void run(){
+        if(gameInSession){
+            for(int x = 0; x < xDimensions; x++){
+                for(int y = 0; y < yDimensions; y++){
+
+                    if(squares[x][y].getClass() == Food.class)
+                        squares[x][y].setColour(new Color(0,255,0));
+                    else if(squares[x][y].getClass() == Ground.class)
+                        squares[x][y].setColour(new Color(255,255,28));
+                    else if(squares[x][y].getClass() == Wall.class)
+                        squares[x][y].setColour(new Color(255,255,255));
+
+
+                }
+            }    
         }
+        repaint();
+    }};
         
-    };
     void Resize(int width, int height){
         xSize = width;
         ySize = height;
@@ -57,9 +69,11 @@ public class PlayGrid extends JPanel{
         yUnitSize = Math.floorDiv(ySize, yDimensions);
         System.out.printf("a square is %d by %d pixels \n", xUnitSize, yUnitSize);
         PopulateGrid();
+        repaint();
         
         
     }
+    
     //add a fancy border around the playgrid...
     void SteupBorder(){
         xBorderSize = 0;
@@ -82,7 +96,7 @@ public class PlayGrid extends JPanel{
 
     
     
-    public void PopulateGrid(){
+public void PopulateGrid(){
         if(! gameInSession){
             for(int x = 0; x < xDimensions; x++){
                 for(int y = 0; y < yDimensions; y++){
@@ -99,6 +113,18 @@ public class PlayGrid extends JPanel{
                 }
             }// end of for loops
             gameInSession = true;
+        }else{
+            for(int x = 0; x < xDimensions; x++){
+                for(int y = 0; y < yDimensions; y++){
+                    int xloc = x*xUnitSize;
+                    int yloc = y*yUnitSize;
+                    squares[x][y].setShape(new Rectangle(xloc,yloc,xUnitSize,yUnitSize));
+                }
+            }
+            
+            
+            
+            
         }
     }
     
@@ -106,110 +132,9 @@ public class PlayGrid extends JPanel{
         
     
 public void start(){
-                gameTime.schedule(play, 5000, 5000);
+                gameTime.schedule(test, 5000, 5000);
 
 }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /**
-     * @return the xSize
-     */
-    public int getxSize() {
-        return xSize;
-    }
-
-    /**
-     * @param xSize the xSize to set
-     */
-    public void setxSize(int xSize) {
-        this.xSize = xSize;
-    }
-
-    /**
-     * @return the ySize
-     */
-    public int getySize() {
-        return ySize;
-    }
-
-    /**
-     * @param ySize the ySize to set
-     */
-    public void setySize(int ySize) {
-        this.ySize = ySize;
-    }
-
-    /**
-     * @return the xUnitSize
-     */
-    public int getxUnitSize() {
-        return xUnitSize;
-    }
-
-    /**
-     * @param xUnitSize the xUnitSize to set
-     */
-    public void setxUnitSize(int xUnitSize) {
-        this.xUnitSize = xUnitSize;
-    }
-
-    /**
-     * @return the yUnitSize
-     */
-    public int getyUnitSize() {
-        return yUnitSize;
-    }
-
-    /**
-     * @param yUnitSize the yUnitSize to set
-     */
-    public void setyUnitSize(int yUnitSize) {
-        this.yUnitSize = yUnitSize;
-    }
-
-    /**
-     * @return the xDimensions
-     */
-    public int getxDimensions() {
-        return xDimensions;
-    }
-
-    /**
-     * @param xDimensions the xDimensions to set
-     */
-    public void setxDimensions(int xDimensions) {
-        this.xDimensions = xDimensions;
-    }
-
-    /**
-     * @return the yDimensions
-     */
-    public int getyDimensions() {
-        return yDimensions;
-    }
-
-    /**
-     * @param yDimensions the yDimensions to set
-     */
-    public void setyDimensions(int yDimensions) {
-        this.yDimensions = yDimensions;
-    }
-
+ 
 }
